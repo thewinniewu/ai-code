@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafe Bakery Sales Data Processor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cafe Bakery Sales Data Processor</h1>
+
+  <textarea id="inputData" placeholder="Paste your cafe bakery sales data here..."></textarea>
+  <button onclick="processData()">Process Data</button>
+
+  <h2>Sales Data Table</h2>
+  <div id="salesDataTable"></div>
+
+  <script>
+    function processData() {
+      const inputData = document.getElementById('inputData').value;
+      const salesData = processSalesData(inputData);
+      displaySalesDataTable(salesData);
+    }
+
+    function processSalesData(inputData) {
+      const salesData = {};
+
+      inputData.split('\n').forEach(line => {
+        if (line.trim() === '') {
+          return;
+        }
+
+        const [item, volume] = line.split('\t')[0].trim().split(' × ');
+
+        if (item.trim() === 'Espresso') {
+          salesData['Espresso'] = (salesData['Espresso'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Americano') {
+          salesData['Americano'] = (salesData['Americano'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Drip') {
+          salesData['Drip'] = (salesData['Drip'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Cold Brew') {
+          salesData['Cold Brew'] = (salesData['Cold Brew'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Macchiato') {
+          salesData['Macchiato'] = (salesData['Macchiato'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Cortado') {
+          salesData['Cortado'] = (salesData['Cortado'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Flat White') {
+          salesData['Flat White'] = (salesData['Flat White'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Cappuccino') {
+          salesData['Cappuccino'] = (salesData['Cappuccino'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Latte') {
+          salesData['Latte'] = (salesData['Latte'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Pandan Aerocano') {
+          salesData['Pandan Aerocano'] = (salesData['Pandan Aerocano'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Passionfruit Espresso Tonic') {
+          salesData['Passion ET'] = (salesData['Passion ET'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Thai Tea Cloud') {
+          salesData['Thai Tea Cloud'] = (salesData['Thai Tea Cloud'] || 0) + parseInt(volume, 10);
+        } else if (item.trim().includes('Tea') && (item.trim() === 'Ice Tea' || item.trim() === 'Hot Tea')) {
+          salesData['Tea'] = (salesData['Tea'] || 0) + parseInt(volume, 10);
+        } else if (item.trim() === 'Retail Beans') {
+          salesData['Retail Beans'] = (salesData['Retail Beans'] || 0) + parseInt(volume, 10);
+        }
+      });
+
+      return salesData;
+    }
+
+    function displaySalesDataTable(salesData) {
+      const columnsOrder = [
+        'Espresso', 'Americano', 'Drip', 'Cold Brew', 'Macchiato', 'Cortado',
+        'Flat White', 'Cappuccino', 'Latte', 'Pandan Aerocano', 'Passion ET',
+        'Special Filter', 'Thai Tea Cloud', 'Tea', 'Retail Beans'
+      ];
+
+      const table = document.createElement('table');
+      const headerRow = table.insertRow(0);
+
+      columnsOrder.forEach(column => {
+        const headerCell = headerRow.insertCell(-1);
+        headerCell.textContent = column;
+      });
+
+      const dataRow = table.insertRow(-1);
+
+      columnsOrder.forEach(column => {
+        const dataCell = dataRow.insertCell(-1);
+        dataCell.textContent = salesData[column] || 0;
+      });
+
+      const salesDataTable = document.getElementById('salesDataTable');
+      salesDataTable.innerHTML = '';
+      salesDataTable.appendChild(table);
+    }
+  </script>
+
+</body>
+</html>
